@@ -2,8 +2,8 @@ import pyfiglet
 import requests
 from colorama import Fore
 from choose_method import choose_method as ch_met
-from goal_selection import available_target as av_tar
 from number_of_threads import select_threads as sel_thr
+from goal_selection import available_target as av_tar
 
 
 def calling_site(site):
