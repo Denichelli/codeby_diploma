@@ -1,44 +1,48 @@
-import re
 import requests
-import os
-from re import findall, sub
 from colorama import Fore
 from multiprocessing import Pool
 import itertools
 import random
 import string
+from threading import Thread
 
 
-DOMAIN = ""
-DIRS = []
-counter_all = 0
-counter_now = 0
-file_path = ''
+def check_host(host):
+    if host == 'prnt.sc':
+        return ['https://' + host + '/', 6]
+    elif host == 'imgur.com':
+        return ['https://' + host + '/gallery/', 7]
 
 
-def check_links():
+def start_requests(address, req):
+    for i in range(req):
+        Thread().start()
+
+
+def check_links(host_address='prnt.sc', req=2):
     """Функция проверяет есть ли коннект с хостом"""
     headers_brows = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) "
                                    "AppleWebKit/537.36 (KHTML, like Gecko) "
                                    "Chrome/72.0.3626.119 Safari/537.36"}
-    host_addres = 'prnt.sc'
     random.shuffle(symbols := list(string.digits + string.ascii_letters))
-    for i in itertools.product(symbols, repeat=6):
+    address, fuzz_num = check_host(host_address)
+    for i in itertools.product(symbols, repeat=fuzz_num):
         res = ''.join(i)
-        check_domain = 'https://' + host_addres + '/' + str(res)
+        res_address = address + str(res)
+        start_requests(res_address, req)
         try:
-            response = requests.get(check_domain, headers=headers_brows,
+            response = requests.get(res_address, headers=headers_brows,
                                     timeout=1, allow_redirects=False)
         except Exception as e:
             print(e)
         else:
             if (status := response.status_code) == 200:
                 print(f'{Fore.GREEN}GOOD LINK!  {Fore.RED}--->{Fore.RESET}   '
-                      f'{check_domain}  {status}')
+                      f'{res_address}  {status}')
                 with open('links.txt', 'a') as links:
-                    links.write(check_domain + '\n')
+                    links.write(res_address + '\n')
             else:
-                print(check_domain)
+                print(res_address)
 
 
 # def result_file(text):
