@@ -4,45 +4,61 @@ from multiprocessing import Pool
 import itertools
 import random
 import string
-from threading import Thread
+from multiprocessing import Pool
+from time import time
 
 
-def check_host(host):
+star_time = time()
+links = 0
+size = 0
+
+
+def host_request(address):
+    headers_brows = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) "
+                                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                                   "Chrome/72.0.3626.119 Safari/537.36"}
+    try:
+        response = requests.get(address, headers=headers_brows,
+                                timeout=1, allow_redirects=False)
+    except Exception as e:
+        print(e)
+    else:
+        if (status := response.status_code) == 200:
+            global links
+            print(f'{Fore.GREEN}GOOD LINK!  {Fore.RED}--->{Fore.RESET}   '
+                  f'{address}  {status}')
+            links += 1
+        else:
+            print(address)
+
+
+def do_host_name(host):
     if host == 'prnt.sc':
         return ['https://' + host + '/', 6]
     elif host == 'imgur.com':
         return ['https://' + host + '/gallery/', 7]
 
 
-def start_requests(address, req):
-    for i in range(req):
-        Thread().start()
-
-
-def check_links(host_address='prnt.sc', req=2):
-    """Функция проверяет есть ли коннект с хостом"""
-    headers_brows = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) "
-                                   "AppleWebKit/537.36 (KHTML, like Gecko) "
-                                   "Chrome/72.0.3626.119 Safari/537.36"}
+def start_pool(address, req, limit_links):
     random.shuffle(symbols := list(string.digits + string.ascii_letters))
-    address, fuzz_num = check_host(host_address)
+    address, fuzz_num = do_host_name(address)
+    res_address = []
     for i in itertools.product(symbols, repeat=fuzz_num):
+        global links
         res = ''.join(i)
-        res_address = address + str(res)
-        start_requests(res_address, req)
-        try:
-            response = requests.get(res_address, headers=headers_brows,
-                                    timeout=1, allow_redirects=False)
-        except Exception as e:
-            print(e)
-        else:
-            if (status := response.status_code) == 200:
-                print(f'{Fore.GREEN}GOOD LINK!  {Fore.RED}--->{Fore.RESET}   '
-                      f'{res_address}  {status}')
-                with open('links.txt', 'a') as links:
-                    links.write(res_address + '\n')
-            else:
-                print(res_address)
+        res_address.append(address + str(res))
+        if links == limit_links:
+            break
+        if len(res_address) == req:
+            with Pool(req) as pool:
+                pool.map(host_request, res_address)
+            res_address = []
+
+
+def check_links(host_address='prnt.sc', req=2, set_links=0):
+    global links
+    links = set_links
+    start_pool(host_address, req, set_links)
 
 
 # def result_file(text):
