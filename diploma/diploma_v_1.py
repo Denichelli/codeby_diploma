@@ -4,6 +4,7 @@ from colorama import Fore
 from choose_method import choose_method as ch_met
 from number_of_threads import select_threads as sel_thr
 from goal_selection import available_target as av_tar
+from selection_of_links import start_pool as st_pool
 
 
 def calling_site(site):
@@ -35,6 +36,7 @@ if __name__ == '__main__':
 
     if calling_site(target):
         print('Next code...')
+        st_pool(target, threads, method)
     else:
         print('EXIT')
 
