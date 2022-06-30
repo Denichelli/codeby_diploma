@@ -30,7 +30,7 @@ def host_request(address):
             links += 1
             with open(os.path.join(
                     os.getcwd(), 'images', f'image{links}.png'),
-                    'ab') as f:
+                    'wb') as f:
                 print(os.path.join(os.getcwd(), 'images', f'image{links}.png'))
                 f.write(response.content)
         else:
