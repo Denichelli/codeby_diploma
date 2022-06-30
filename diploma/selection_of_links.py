@@ -4,6 +4,7 @@ from multiprocessing import Pool
 import itertools
 import random
 import string
+import os
 from multiprocessing import Pool
 from time import time
 
@@ -25,9 +26,13 @@ def host_request(address):
     else:
         if (status := response.status_code) == 200:
             global links
-            print(f'{Fore.GREEN}GOOD LINK!  {Fore.RED}--->{Fore.RESET}   '
-                  f'{address}  {status}')
+            print(f'{Fore.GREEN}GOOD! {Fore.RED}-->{Fore.RESET} {address}')
             links += 1
+            with open(os.path.join(
+                    os.getcwd(), 'images', f'image{links}.png'),
+                    'ab') as f:
+                print(os.path.join(os.getcwd(), 'images', f'image{links}.png'))
+                f.write(response.content)
         else:
             print(address)
 
@@ -47,7 +52,7 @@ def start_pool(address, req, limit_links):
         global links
         res = ''.join(i)
         res_address.append(address + str(res))
-        if links == limit_links:
+        if links >= limit_links:
             break
         if len(res_address) == req:
             with Pool(req) as pool:
@@ -55,12 +60,11 @@ def start_pool(address, req, limit_links):
             res_address = []
 
 
-def check_links(host_address='prnt.sc', req=2, set_links=0):
-    global links
-    links = set_links
+def check_links(host_address='prnt.sc', req=2, set_links=20):
     start_pool(host_address, req, set_links)
 
 
+check_links()
 # def result_file(text):
 #     global file_path
 #     with open((''.join(findall(r'(.+/).+$', file_path)) + 'fuzz.txt'),
