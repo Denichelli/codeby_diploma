@@ -14,6 +14,7 @@ def host_request(address):
                                 timeout=1, allow_redirects=False)
     except Exception as e:
         print(e)
+        return False
     else:
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -22,7 +23,9 @@ def host_request(address):
             extension = re.findall(r'.*/(\w+\.\w{3,4}$)', image_link)[0]
             print(f'{Fore.GREEN}GOOD! {Fore.RED}-->{Fore.RESET} {address}')
             data = requests.get(image_link, headers=headers_brows).content
-            wr_file(data, extension)
+            if res := wr_file(data, extension):
+                return [1, res]
         else:
             print(address)
         response.close()
+        return False
