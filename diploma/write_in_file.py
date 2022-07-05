@@ -19,7 +19,7 @@ def write_in_file(data, extension):
                 os.mkdir('images')
             except Exception as e:
                 print(e)
+                return False
             else:
-                write_in_file(data, extension)
-        print('There is no folder for saving files')
-        return False
+                if res := write_in_file(data, extension):
+                    return res
