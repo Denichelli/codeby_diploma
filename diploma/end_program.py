@@ -13,4 +13,4 @@ def end_program(res_time, res_links, res_file_size):
     print('=' * 20, '\n\n')
     print(f'{Fore.LIGHTMAGENTA_EX}Ready for: {result_time:<16}')
     print(f'Found links: {result_links:<16}')
-    print(f'Folder size: {result_file_size:<16}{Fore.RESET}')
+    print(f'Folder size: {result_file_size:<16}{Fore.RESET}\n')
