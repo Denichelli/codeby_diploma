@@ -33,7 +33,7 @@ def convert_args(address, req, limit_args):
         start_find_data(address, req, limit_time, limit_links, limit_file_size)
     elif limit_links != 0:
         limit_links = int(re.findall(r'(^\d+)', limit_links)[0])
-        print(limit_links)
+        # print(limit_links)
         start_find_data(address, req, limit_time, limit_links, limit_file_size)
     elif limit_file_size != 0:
         file_size_digits = int(re.findall(r'(^\d+)', limit_file_size)[0])
