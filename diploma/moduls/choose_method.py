@@ -11,7 +11,7 @@ def select_time():
         if not re.fullmatch(r'\d{1,4}[hms]$', sel_ti.lower().replace(' ', '')):
             print('Error: You entered an incorrect value, try again\n')
         else:
-            return sel_ti.lower().replace(' ', '')
+            return [sel_ti.lower().replace(' ', ''), 0, 0]
 
 
 def select_links():
@@ -21,20 +21,20 @@ def select_links():
         except Exception as e:
             print(e, '\n', f'Enter a natural number\n', sep='')
         else:
-            return f'{sel_lin} links'
+            return [0, f'{sel_lin} links', 0]
 
 
 def select_target_size():
     while True:
         print(f'\n{Fore.BLUE}Specify the file size limit in the form of "5B" '
-              f'or "5KB" or "5MB", etc.,\nwhere "B" is bytes, '
-              f'"KB" is kilobytes, "MB" is megabytes, etc.{Fore.RESET}\n')
+              f'or "5KB" or "5MB"\nwhere "B" is bytes, '
+              f'"KB" is kilobytes, "MB" is megabytes{Fore.RESET}\n')
         sel_tar = input(f'{Fore.GREEN}Specify the file size: {Fore.RESET}')
-        if not re.fullmatch(r'\d{1,10}[KMGT]?B$',
+        if not re.fullmatch(r'\d{1,10}[KM]?B$',
                             sel_tar.upper().replace(' ', '')):
             print('Error: You entered an incorrect value, try again')
         else:
-            return sel_tar.upper().replace(' ', '')
+            return [0, 0, sel_tar.upper().replace(' ', '')]
 
 
 def choose_method():
