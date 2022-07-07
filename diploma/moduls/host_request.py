@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from colorama import Fore
-from write_in_file import write_in_file as wr_file
+from diploma.moduls.write_in_file import write_in_file as wr_file
 
 
 def fix_link(link):
@@ -40,10 +40,9 @@ def host_request(address):
                              find('img', class_="no-click screenshot-image").
                              get('src'))
             extension = re.findall(r'.*/([\w-]+\.\w{3,4}$)', image_link)
-            print(extension)
             data = get_data(image_link, headers_brows)
             if res := wr_file(data, *extension):
-                return [1, res]
+                return res
         else:
             print(address)
         response.close()
