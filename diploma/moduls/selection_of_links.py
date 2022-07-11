@@ -3,9 +3,9 @@ import random
 import re
 import string
 from time import time
-from diploma.moduls.host_request import host_request
-from diploma.moduls.end_program import end_program
-from diploma.moduls.open_folder import open_folder
+from host_request import host_request
+from end_program import end_program
+from open_folder import open_folder
 
 start_time = 0
 set_time = 0
