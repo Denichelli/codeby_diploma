@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from colorama import Fore
-from diploma.moduls.write_in_file import write_in_file as wr_file
+from write_in_file import write_in_file as wr_file
 
 
 def fix_link(link):
