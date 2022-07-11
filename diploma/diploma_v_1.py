@@ -1,10 +1,10 @@
 import pyfiglet
 import requests
 from colorama import Fore
-from diploma.moduls.choose_method import choose_method
-from diploma.moduls.number_of_threads import select_threads
-from diploma.moduls.goal_selection import available_target
-from diploma.moduls.selection_of_links import convert_args
+from moduls.choose_method import choose_method
+from moduls.number_of_threads import select_threads
+from moduls.goal_selection import available_target
+from moduls.selection_of_links import convert_args
 
 
 def calling_site(site):
