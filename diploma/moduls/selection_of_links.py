@@ -3,9 +3,9 @@ import random
 import re
 import string
 from time import time
-from host_request import host_request
-from end_program import end_program
-from open_folder import open_folder
+import host_request
+import end_program
+import open_folder
 
 start_time = 0
 set_time = 0
@@ -18,6 +18,31 @@ def do_host_name(host):
         return [f'https://{host}/', 6]
     # elif host == 'imgur.com':
     #     return [f'https://{host}/gallery/', 7]
+
+
+def start_find_data(address, req, limit_time, limit_links, limit_file_size):
+    global links, file_size, start_time, set_time
+    start_time = time()
+    random.shuffle(symbols := list(string.digits + string.ascii_lowercase))
+    address, fuzz_num = do_host_name(address)
+    for i in itertools.product(symbols, repeat=fuzz_num):
+        for current_reading, limit in ((links, limit_links),
+                                       (file_size, limit_file_size),
+                                       (set_time, limit_time)):
+            if current_reading >= limit != 0:
+                end_program.ending(set_time, links, file_size)
+                open_folder.opening_folder()
+                return False
+        gen_piece = ''.join(i)
+        try:
+            res = host_request.address_verification(f'{address}{gen_piece}')
+        except Exception as e:
+            print(e)
+        else:
+            links += 1
+            file_size += res
+            set_time += (time() - start_time)
+            start_time = time()
 
 
 def convert_args(address, req, limit_args):
@@ -44,28 +69,3 @@ def convert_args(address, req, limit_args):
         else:
             limit_file_size = file_size_digits
         start_find_data(address, req, limit_time, limit_links, limit_file_size)
-
-
-def start_find_data(address, req, limit_time, limit_links, limit_file_size):
-    global links, file_size, start_time, set_time
-    start_time = time()
-    random.shuffle(symbols := list(string.digits + string.ascii_lowercase))
-    address, fuzz_num = do_host_name(address)
-    for i in itertools.product(symbols, repeat=fuzz_num):
-        for current_reading, limit in ((links, limit_links),
-                                       (file_size, limit_file_size),
-                                       (set_time, limit_time)):
-            if current_reading >= limit != 0:
-                end_program(set_time, links, file_size)
-                open_folder()
-                return False
-        gen_piece = ''.join(i)
-        try:
-            res = host_request(f'{address}{gen_piece}')
-        except Exception as e:
-            print(e)
-        else:
-            links += 1
-            file_size += res
-            set_time += (time() - start_time)
-            start_time = time()

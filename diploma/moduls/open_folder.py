@@ -12,7 +12,7 @@ def operation_system():
     return os.name
 
 
-def open_folder():
+def opening_folder():
     target_folder = os.path.join(os.getcwd(), 'images')
     print(os.path.isdir(target_folder))
     if input('Do you want to open a folder with pictures?\n'

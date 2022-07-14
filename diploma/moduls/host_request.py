@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from colorama import Fore
-from write_in_file import write_in_file as wr_file
+import write_in_file
 
 
 def fix_link(link):
@@ -22,7 +22,7 @@ def get_data(link, headers_br):
         return data
 
 
-def host_request(address):
+def address_verification(address):
     headers_brows = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) "
                                    "AppleWebKit/537.36 (KHTML, like Gecko) "
                                    "Chrome/72.0.3626.119 Safari/537.36"}
@@ -41,9 +41,12 @@ def host_request(address):
                              get('src'))
             extension = re.findall(r'.*/([\w-]+\.\w{3,4}$)', image_link)
             data = get_data(image_link, headers_brows)
-            if res := wr_file(data, *extension):
+            if res := write_in_file.writing_in_file(data, extension[0]):
                 return res
         else:
             print(address)
         response.close()
         return False
+
+
+address_verification('https://soundcloud.com/discover')

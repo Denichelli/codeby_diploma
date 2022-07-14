@@ -1,7 +1,7 @@
 import os
 
 
-def write_in_file(data, extension):
+def writing_in_file(data, extension):
     folder_path = os.path.join(os.getcwd(), 'images')
     file_path = os.path.join(os.getcwd(), 'images', f'{extension}')
     if os.path.isdir(folder_path):
@@ -21,5 +21,5 @@ def write_in_file(data, extension):
                 print(e)
                 return False
             else:
-                if res := write_in_file(data, extension):
+                if res := writing_in_file(data, extension):
                     return res

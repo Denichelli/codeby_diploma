@@ -1,7 +1,7 @@
 from colorama import Fore
 
 
-def end_program(res_time, res_links, res_file_size):
+def ending(res_time, res_links, res_file_size):
     result_time = f'{int(res_time // 3600)} hours ' \
                f'{int((res_time % 3600) // 60)} minutes ' \
                f'{int((res_time % 3600) % 60)} seconds'

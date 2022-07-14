@@ -1,10 +1,13 @@
 import pyfiglet
 import requests
 from colorama import Fore
-from moduls.choose_method import choose_method
-from moduls.number_of_threads import select_threads
-from moduls.goal_selection import available_target
-from moduls.selection_of_links import convert_args
+import moduls.methods
+import moduls.end_program
+import moduls.goal_selection
+import moduls.host_request
+import moduls.number_of_threads
+import moduls.open_folder
+import moduls.selection_of_links
 
 
 def calling_site(site):
@@ -30,10 +33,10 @@ def calling_site(site):
 if __name__ == '__main__':
     pyfiglet.print_figlet('My NetStalker', 'big')
 
-    target = available_target()
-    threads = select_threads()
+    target = moduls.goal_selection.available_target()
+    threads = moduls.number_of_threads.select_threads()
     method = ''
-    for i in (list_methods := choose_method()):
+    for i in (list_methods := moduls.methods.choose_method()):
         if i != 0:
             method = i
 
@@ -42,6 +45,6 @@ if __name__ == '__main__':
           f'for {Fore.LIGHTBLUE_EX}{method}{Fore.RESET}')
 
     if calling_site(target):
-        convert_args(target, threads, list_methods)
+        moduls.selection_of_links.convert_args(target, threads, list_methods)
     else:
         print('EXIT')
