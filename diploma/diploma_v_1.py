@@ -2,11 +2,8 @@ import pyfiglet
 import requests
 from colorama import Fore
 import moduls.methods
-import moduls.end_program
 import moduls.goal_selection
-import moduls.host_request
 import moduls.number_of_threads
-import moduls.open_folder
 import moduls.selection_of_links
 
 

@@ -1,25 +1,6 @@
 import requests
-import re
-from bs4 import BeautifulSoup
 from colorama import Fore
-import write_in_file
-
-
-def fix_link(link):
-    if link.startswith('//'):
-        return link.replace('//', 'https://')
-    else:
-        return link
-
-
-def get_data(link, headers_br):
-    res_link = fix_link(link)
-    try:
-        data = requests.get(res_link, headers=headers_br).content
-    except Exception as e:
-        print(e)
-    else:
-        return data
+from . import write_in_file
 
 
 def address_verification(address):
@@ -35,18 +16,19 @@ def address_verification(address):
     else:
         if response.status_code == 200:
             print(f'{Fore.GREEN}GOOD! {Fore.RED}-->{Fore.RESET} {address}')
-            soup = BeautifulSoup(response.text, 'html.parser')
-            image_link = str(soup.
-                             find('img', class_="no-click screenshot-image").
-                             get('src'))
-            extension = re.findall(r'.*/([\w-]+\.\w{3,4}$)', image_link)
-            data = get_data(image_link, headers_brows)
-            if res := write_in_file.writing_in_file(data, extension[0]):
+            file_name = address[-12:-4]
+            if (slice_for_extension := response.text[:15]).count('GIF'):
+                file_name += 'gif'
+            elif slice_for_extension.count('JFIF'):
+                file_name += 'jpg'
+            elif slice_for_extension.count('PNG'):
+                file_name += 'png'
+            else:
+                file_name = address[-12:]
+            data = response.content
+            if res := write_in_file.writing_in_file(data, file_name):
                 return res
         else:
             print(address)
         response.close()
         return False
-
-
-address_verification('https://soundcloud.com/discover')

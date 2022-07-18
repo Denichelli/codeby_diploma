@@ -2,7 +2,7 @@ from colorama import Fore
 
 
 def available_target():
-    dict_targets = {'1': 'prnt.sc'}  # , '2': 'imgur.com', '3': 'rghost.net'}
+    dict_targets = {'1': 'imgur.com'}  # , '2': 'imgur.com', '3': 'rghost.net'}
     while True:
         print(f'{Fore.GREEN}Available targets:{Fore.RESET}')
         for num, targ in dict_targets.items():
