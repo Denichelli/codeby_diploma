@@ -14,9 +14,16 @@ def operation_system():
 
 def opening_folder():
     target_folder = os.path.join(os.getcwd(), 'images')
-    print(os.path.isdir(target_folder))
-    if input('Do you want to open a folder with pictures?\n'
-             '"Y" - open folder with images\n"N" - end program\n'
-             'Your choice: ').upper() == 'Y':
-        if os.path.isdir(target_folder):
-            opening(target_folder)
+    while True:
+        try:
+            req_open = input('Do you want to open a folder with pictures?\n'
+                             '"Y" - open folder with images\n'
+                             '"N" - end program\n'
+                             'Your choice: ').upper()
+        except Exception as e:
+            print(e)
+        else:
+            if req_open == 'Y':
+                if os.path.isdir(target_folder):
+                    opening(target_folder)
+            break
