@@ -1,4 +1,3 @@
-import itertools
 import random
 import re
 import string
@@ -21,13 +20,12 @@ def do_host_name(host):
 def start_find_data(address, req, limit_time, limit_links, limit_file_size):
     global links, file_size, start_time, set_time
     start_time = time()
-    random.shuffle(symbols := list(string.ascii_uppercase +
-                                   string.ascii_lowercase +
-                                   string.digits))
+    symbols = list(string.ascii_uppercase + string.ascii_lowercase +
+                   string.digits)
     address, fuzz_num = do_host_name(address)
     res_address = []
-    for i in itertools.product(symbols, repeat=fuzz_num):
-        gen_piece = ''.join(i)
+    while True:
+        gen_piece = ''.join(random.choice(symbols) for i in range(fuzz_num))
         for current_reading, limit in ((links, limit_links),
                                        (file_size, limit_file_size),
                                        (set_time, limit_time)):
@@ -39,7 +37,8 @@ def start_find_data(address, req, limit_time, limit_links, limit_file_size):
             res_address.append(f'{address}{gen_piece}.jpeg')
             continue
         elif len(res_address) == req:
-            for res in multiprocessor_operation.pool_operation(req, res_address):
+            for res in multiprocessor_operation.\
+                    pool_operation(req, res_address):
                 if res:
                     links += 1
                     file_size += res
