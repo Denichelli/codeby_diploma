@@ -7,5 +7,7 @@ def pool_operation(req, list_links):
         try:
             result = pool.map(host_request.address_verification, list_links)
         except Exception as e:
-            print(e)
-    return result
+            print(e, '\nForced termination of the program')
+        else:
+            return result
+
