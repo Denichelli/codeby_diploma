@@ -37,11 +37,14 @@ def start_find_data(address, req, limit_time, limit_links, limit_file_size):
             res_address.append(f'{address}{gen_piece}.jpeg')
             continue
         elif len(res_address) == req:
-            for res in multiprocessor_operation.\
-                    pool_operation(req, res_address):
-                if res:
-                    links += 1
-                    file_size += res
+            try:
+                for res in multiprocessor_operation.\
+                        pool_operation(req, res_address):
+                    if res:
+                        links += 1
+                        file_size += res
+            except:
+                return False
             res_address = []
         set_time += (time() - start_time)
         start_time = time()
